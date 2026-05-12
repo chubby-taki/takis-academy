@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>講座資料 — AI × 手刺繍クリエイターアカデミー</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --accent: #b5835a;
+      --accent-light: #e8d5c4;
+      --accent-dark: #7d5a3c;
+      --text: #3d2b1f;
+      --sub: #8b6652;
+      --bg: #fdf8f3;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(150deg, #e2c9b5 0%, #cdb090 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container { max-width: 760px; margin: 0 auto; }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header .eyebrow {
+      font-size: 0.78rem;
+      color: var(--accent-dark);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.8;
+    }
+    .header h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .header .sub {
+      font-size: 0.85rem;
+      color: var(--sub);
+    }
+    .header .divider {
+      width: 40px; height: 2px;
+      background: var(--accent);
+      margin: 16px auto 0;
+      border-radius: 1px;
+    }
+
+    .section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-left: 4px;
+      opacity: 0.7;
+    }
+
+    .cards { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 22px 26px;
+      box-shadow: 0 4px 16px rgba(61,43,31,0.1);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--accent);
+      border-radius: 4px 0 0 4px;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(61,43,31,0.16);
+    }
+
+    .card-num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-light);
+      min-width: 40px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .card-body { flex: 1; min-width: 0; }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    .card-slides {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+      white-space: nowrap;
+      background: var(--accent-light);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .card-arrow {
+      color: var(--accent-light);
+      font-size: 1.1rem;
+    }
+
+    /* ツールカード */
+    .tool-card {
+      background: var(--bg);
+      border: 2px dashed var(--accent-light);
+    }
+    .tool-card::before { background: #a0c4a0; }
+    .tool-card .card-num { color: #c8e0c8; }
+    .tool-card .card-slides {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(61,43,31,0.4);
+      margin-top: 20px;
+    }
+
+    @media (max-width: 500px) {
+      .card-num { font-size: 1.4rem; min-width: 30px; }
+      .card-title { font-size: 0.92rem; }
+      .card-slides { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="eyebrow">AI × 手刺繍クリエイターアカデミー</div>
+    <h1>講座資料</h1>
+    <p class="sub">各資料をタップして開いてください</p>
+    <div class="divider"></div>
+  </div>
+
+  <div class="section-title">講座スライド</div>
+  <div class="cards">
+    <a class="card" href="SNS見せ方の基本.html">
+      <div class="card-num">01</div>
+      <div class="card-body">
+        <div class="card-title">Instagram 見せ方の基本</div>
+        <div class="card-desc">プロフィール・世界観・投稿の仕組み・Geminiで作る方法</div>
+      </div>
+      <span class="card-slides">15枚</span>
+      <span class="card-arrow">›</span>
+    </a>
+    <a class="card" href="AI活用投稿作成術.html">
+      <div class="card-num">02</div>
+      <div class="card-body">
+        <div class="card-title">AI活用 投稿作成術</div>
+        <div class="card-desc">Geminiでリール・フィード・ストーリーズをかんたんに作る</div>
+      </div>
+      <span class="card-slides">8枚</span>
+      <span class="card-arrow">›</span>
+    </a>
+    <a class="card" href="W10_完成作品の撮影方法.html">
+      <div class="card-num">03</div>
+      <div class="card-body">
+        <div class="card-title">完成作品の撮影方法</div>
+        <div class="card-desc">光・構図・スマホ設定・編集・SNSサイズ比率</div>
+      </div>
+      <span class="card-slides">9枚</span>
+      <span class="card-arrow">›</span>
+    </a>
+    <a class="card" href="名前と背景の刺繍アイデア.html">
+      <div class="card-num">04</div>
+      <div class="card-body">
+        <div class="card-title">名前と背景の刺繍アイデア</div>
+        <div class="card-desc">ヒアリング・配置・フォント・ステッチ・Pinterestでの探し方</div>
+      </div>
+      <span class="card-slides">13枚</span>
+      <span class="card-arrow">›</span>
+    </a>
+  </div>
+
+  <div class="section-title">ツール</div>
+  <div class="cards">
+    <a class="card tool-card" href="インサイト記録シート.html">
+      <div class="card-num">📊</div>
+      <div class="card-body">
+        <div class="card-title">インサイト記録シート</div>
+        <div class="card-desc">投稿後の翌日・2日後・1週間後のデータを記録する</div>
+      </div>
+      <span class="card-slides">ツール</span>
+      <span class="card-arrow">›</span>
+    </a>
+  </div>
+
+  <div class="footer">AI × 手刺繍クリエイターアカデミー 第0期</div>
+
+</div>
+</body>
+</html>

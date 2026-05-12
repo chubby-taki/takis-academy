@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNS見せ方の基本</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fdf8f3;
+      --accent: #b5835a;
+      --accent-light: #e8d5c4;
+      --accent-dark: #7d5a3c;
+      --text: #3d2b1f;
+      --sub: #8b6652;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(150deg, #e2c9b5 0%, #cdb090 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 20px;
+    }
+
+    .presentation { width: 100%; max-width: 860px; }
+
+    .slide {
+      display: none;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 52px 64px;
+      min-height: 500px;
+      box-shadow: 0 8px 32px rgba(61,43,31,0.14);
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* タイトルスライド */
+    .slide-title {
+      text-align: center;
+      align-items: center;
+      background: linear-gradient(160deg, #fdf8f3 0%, #f7ede0 100%);
+    }
+    .slide-title .eyebrow {
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+    .slide-title h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 18px;
+    }
+    .slide-title .divider {
+      width: 48px; height: 2px;
+      background: var(--accent);
+      margin: 0 auto 18px;
+      border-radius: 1px;
+    }
+    .slide-title .sub {
+      font-size: 0.92rem;
+      color: var(--sub);
+      line-height: 1.9;
+    }
+
+    /* ステップバッジ */
+    .step-badge {
+      position: absolute;
+      top: 20px; right: 24px;
+    }
+    .step-badge span {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+    .step-think { background: var(--accent-light); color: var(--accent-dark); }
+    .step-ai { background: #dde8ff; color: #3a5fa0; }
+
+    /* セクションラベル */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      padding: 3px 10px 3px 8px;
+      background: var(--accent-light);
+      border-radius: 20px;
+    }
+    .section-label i { width: 11px; height: 11px; stroke: var(--accent); }
+
+    .slide h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 26px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--accent-light);
+    }
+
+    /* グリッドカード */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 4px; }
+    .grid-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      box-shadow: 0 2px 6px rgba(61,43,31,0.08);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .grid-card:hover { transform: translateY(-2px); box-shadow: 0 5px 14px rgba(61,43,31,0.13); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .card-icon-wrap {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon-wrap i { width: 14px; height: 14px; stroke: var(--accent-dark); }
+    .grid-card .card-title {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+    .grid-card .card-desc {
+      font-size: 0.8rem;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+
+    /* アイテムリスト */
+    .items { display: flex; flex-direction: column; gap: 13px; }
+    .item { display: flex; align-items: flex-start; gap: 12px; }
+    .item-icon-wrap {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .item-icon-wrap i { width: 12px; height: 12px; stroke: var(--accent-dark); }
+    .item-label {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+    .item-desc {
+      font-size: 0.83rem;
+      color: var(--sub);
+      line-height: 1.65;
+    }
+
+    /* プロンプトボックス */
+    .prompt-box {
+      background: #f0f4ff;
+      border: 1px solid #c5d3f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+    .prompt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .prompt-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #4a6fa5;
+      letter-spacing: 0.08em;
+    }
+    .prompt-label i { width: 12px; height: 12px; stroke: #4a6fa5; }
+    .copy-btn {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4a6fa5;
+      background: white;
+      border: 1px solid #c5d3f0;
+      border-radius: 6px;
+      padding: 3px 10px;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: #dde8ff; }
+    .prompt-box p {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.9;
+      white-space: pre-wrap;
+    }
+
+    /* 進捗バー */
+    .progress-bar {
+      width: 100%; height: 3px;
+      background: rgba(181,131,90,0.2);
+      border-radius: 2px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    /* スライド番号 */
+    .slide-num {
+      position: absolute;
+      bottom: 18px; right: 24px;
+      font-size: 0.72rem;
+      color: rgba(181,131,90,0.45);
+      font-weight: 500;
+    }
+
+    /* ナビゲーション */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 22px;
+      font-size: 0.85rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .nav-btn:hover:not(:disabled) { background: var(--accent-dark); transform: translateY(-1px); }
+    .nav-btn:disabled { background: var(--accent-light); color: #b8967a; cursor: default; }
+    .nav-counter {
+      font-size: 0.82rem;
+      color: var(--accent-dark);
+      min-width: 64px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* 2カラムレイアウト（画像付きスライド） */
+    .slide-two-col {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      width: 100%;
+    }
+    .slide-text { flex: 1; min-width: 0; }
+    .insta-img-wrap {
+      flex: 0 0 200px;
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(61,43,31,0.2);
+      overflow: hidden;
+    }
+    .insta-img {
+      width: 200px;
+      display: block;
+    }
+    .anno-box {
+      position: absolute;
+      border: 2.5px solid var(--accent);
+      border-radius: 4px;
+      background: rgba(181,131,90,0.12);
+      pointer-events: none;
+    }
+    .anno-label {
+      position: absolute;
+      background: var(--accent);
+      color: white;
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 3px;
+      white-space: nowrap;
+      pointer-events: none;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* ライトボックス */
+    .insta-img-wrap { cursor: zoom-in; }
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .lightbox-overlay.open { display: flex; }
+    #lightboxContainer {
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      cursor: zoom-out;
+    }
+    #lightboxContainer img {
+      display: block;
+      max-width: none;
+      max-height: none;
+    }
+    .lightbox-hint {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.8rem;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px; right: 28px;
+      color: white;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      font-weight: 300;
+      opacity: 0.8;
+    }
+    .lightbox-close:hover { opacity: 1; }
+
+    @media (max-width: 640px) {
+      .slide { padding: 32px 24px; }
+      .slide h3 { font-size: 1.35rem; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .slide-title h1 { font-size: 1.9rem; }
+      .slide-two-col { flex-direction: column; }
+      .insta-img-wrap { flex: none; width: 100%; }
+      .insta-img { width: 100%; }
+    }
+
+    @media print {
+      body { background: white; padding: 0; display: block; }
+      .slide { display: flex !important; page-break-after: always; border-radius: 0; box-shadow: none; min-height: 100vh; animation: none; }
+      .nav, .progress-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="presentation">
+
+  <!-- スライド 1: タイトル -->
+  <div class="slide slide-title active">
+    <div class="eyebrow">AI × 手刺繍クリエイターアカデミー</div>
+    <h1>Instagram<br>見せ方の基本</h1>
+    <div class="divider"></div>
+    <p class="sub">プロフィール・世界観・発信の仕組みを整えて<br>伝わるアカウントを作る</p>
+    <div class="slide-num">1 / 15</div>
+  </div>
+
+  <!-- スライド 2: プロフィール（考え方） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">考え方</span></div>
+    <div class="section-label"><i data-lucide="user"></i>プロフィール</div>
+    <h3>プロフィールの考え方</h3>
+    <div class="slide-two-col">
+      <div class="slide-text">
+        <div class="grid-2">
+          <div class="grid-card">
+            <div class="card-header">
+              <div class="card-icon-wrap"><i data-lucide="camera"></i></div>
+              <div class="card-title">アイコン</div>
+            </div>
+            <div class="card-desc">顔写真（後ろ向き・横顔もOK）、作品写真、ロゴなど。小さく表示されても何かわかるものにする。</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-header">
+              <div class="card-icon-wrap"><i data-lucide="search"></i></div>
+              <div class="card-title">名前</div>
+            </div>
+            <div class="card-desc">検索されやすいキーワードを含める。例：名前＋「刺繍」「ペット刺繍作家」など。</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-header">
+              <div class="card-icon-wrap"><i data-lucide="file-text"></i></div>
+              <div class="card-title">自己紹介文</div>
+            </div>
+            <div class="card-desc">誰のための・何をしている人かを最初の一行に。行動を促す内容も。絵文字で読みやすくする。</div>
+          </div>
+          <div class="grid-card">
+            <div class="card-header">
+              <div class="card-icon-wrap"><i data-lucide="link"></i></div>
+              <div class="card-title">リンク</div>
+            </div>
+            <div class="card-desc">一番届けたいページを1つに絞る。LP・LINEなど。</div>
+          </div>
+        </div>
+      </div>
+      <div class="insta-img-wrap"
+           data-crop-top="1" data-crop-left="2" data-crop-width="95" data-crop-height="14"
+           onclick="openLightbox(this)">
+        <img src="instagram-sample.png" class="insta-img" alt="Instagramプロフィール例">
+        <div class="anno-box" style="top:1%;left:2%;width:95%;height:14%;"></div>
+        <div class="anno-label" style="top:1%;left:2%;">プロフィール欄</div>
+      </div>
+    </div>
+    <div class="slide-num">2 / 12</div>
+  </div>
+
+  <!-- スライド 3: プロフィール（Geminiで作る） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="user"></i>プロフィール</div>
+    <h3>Geminiで作る</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">名前の候補、自己紹介文</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramのプロフィールを作ってください。
+活動内容：（例：手刺繍でリアルなペット肖像画を制作・販売しています）
+ターゲット：（例：大切なペットを作品にして残したい方）
+発信したいこと：（例：制作過程・受注・刺繍の楽しさ）
+①検索されやすい名前の候補を3つ
+②自己紹介文（150字以内・絵文字あり）</p>
+    </div>
+    <div class="slide-num">3 / 12</div>
+  </div>
+
+  <!-- スライド 4: 投稿の種類と使い分け -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="layout-grid"></i>投稿の種類</div>
+    <h3>投稿の種類と使い分け</h3>
+    <div class="grid-3">
+      <div class="grid-card">
+        <div class="card-header">
+          <div class="card-icon-wrap"><i data-lucide="play-circle"></i></div>
+          <div class="card-title">リール</div>
+        </div>
+        <div class="card-desc">まだ知らない新規の人に届く。フォロワーを増やすための投稿。最初の数秒が勝負。</div>
+      </div>
+      <div class="grid-card">
+        <div class="card-header">
+          <div class="card-icon-wrap"><i data-lucide="image"></i></div>
+          <div class="card-title">フィード</div>
+        </div>
+        <div class="card-desc">フォロワー・プロフィールを見に来た人に届く。信頼を積み重ねる投稿。写真の質が重要。</div>
+      </div>
+      <div class="grid-card">
+        <div class="card-header">
+          <div class="card-icon-wrap"><i data-lucide="circle"></i></div>
+          <div class="card-title">ストーリーズ</div>
+        </div>
+        <div class="card-desc">フォロワーとの距離を縮める。日常や裏側を見せて親近感を作る。気軽でOK。</div>
+      </div>
+    </div>
+    <div class="slide-num">4 / 12</div>
+  </div>
+
+  <!-- スライド 5: 世界観（考え方） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">考え方</span></div>
+    <div class="section-label"><i data-lucide="palette"></i>世界観を統一する</div>
+    <h3>世界観の考え方</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="target"></i></div>
+        <div class="item-body">
+          <div class="item-label">投稿のテーマを決める</div>
+          <div class="item-desc">何を発信するアカウントか一目でわかるようにする。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sun"></i></div>
+        <div class="item-body">
+          <div class="item-label">色味・写真のスタイルを揃える</div>
+          <div class="item-desc">編集のトーン・背景・小物・構図のパターンを統一する。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="type"></i></div>
+        <div class="item-body">
+          <div class="item-label">言葉とフォントのトーンを揃える</div>
+          <div class="item-desc">丁寧・カジュアル・温かみなど、文体とテロップの見た目を統一する。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="grid-2x2"></i></div>
+        <div class="item-body">
+          <div class="item-label">プロフィール画面全体の見え方を意識する</div>
+          <div class="item-desc">9枚並んだときのグリッドの印象を意識する。訪問者の第一印象になる。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">5 / 12</div>
+  </div>
+
+  <!-- スライド 6: 世界観（Geminiで作る） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="palette"></i>世界観を統一する</div>
+    <h3>Geminiで作る</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">アカウントのコンセプト文、投稿テーマの候補</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramアカウントのコンセプトと投稿テーマを作ってください。
+活動内容：（例：手刺繍でリアルなペット肖像画を制作・販売）
+ターゲット：（例：大切なペットを作品にして残したい方）
+好きな雰囲気・イメージ：（例：ナチュラル・温かみ・丁寧な手仕事感）
+①一文で表すコンセプト
+②投稿テーマの候補を5つ</p>
+    </div>
+    <div class="slide-num">6 / 12</div>
+  </div>
+
+  <!-- スライド 7: ハイライト（考え方） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">考え方</span></div>
+    <div class="section-label"><i data-lucide="bookmark"></i>ハイライト</div>
+    <h3>ハイライトの考え方</h3>
+    <div class="slide-two-col">
+      <div class="slide-text">
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="archive"></i></div>
+            <div class="item-body">
+              <div class="item-label">ストーリーズをプロフィールに残せる機能</div>
+              <div class="item-desc">24時間で消えるストーリーズを永続的に保存してプロフィールに表示できる。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="folders"></i></div>
+            <div class="item-body">
+              <div class="item-label">カテゴリ別にまとめる</div>
+              <div class="item-desc">例：作品紹介・受注案内・制作過程・教室情報など。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="tag"></i></div>
+            <div class="item-body">
+              <div class="item-label">タイトルは短く・カバー画像を統一する</div>
+              <div class="item-desc">「作品」「受注」「about」など。カバー画像を揃えると世界観が出る。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="arrow-left-right"></i></div>
+            <div class="item-body">
+              <div class="item-label">左から優先順位を意識・定期的に見直す</div>
+              <div class="item-desc">左から順に目に入るので最も伝えたいものを左に置く。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insta-img-wrap"
+           data-crop-top="13" data-crop-left="2" data-crop-width="95" data-crop-height="9"
+           onclick="openLightbox(this)">
+        <img src="instagram-sample.png" class="insta-img" alt="Instagramハイライト例">
+        <div class="anno-box" style="top:13%;left:2%;width:95%;height:9%;"></div>
+        <div class="anno-label" style="top:8%;left:2%;">ハイライト</div>
+      </div>
+    </div>
+    <div class="slide-num">7 / 12</div>
+  </div>
+
+  <!-- スライド 8: ハイライト（Geminiで作る） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="bookmark"></i>ハイライト</div>
+    <h3>Geminiで作る</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">カテゴリ名の候補、各ハイライトの説明文、カバー画像のデザインコンセプト</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramのハイライトを整理したいです。
+活動内容：（例：手刺繍でリアルなペット肖像画を制作・販売）
+①ハイライトのカテゴリ名の候補を5つ（短い言葉で）
+②各カテゴリにどんなストーリーズを保存するかの説明文
+③カバー画像はどんなデザインにするとよいかのアドバイス</p>
+    </div>
+    <div class="slide-num">8 / 12</div>
+  </div>
+
+  <!-- スライド 9: 固定投稿（考え方） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">考え方</span></div>
+    <div class="section-label"><i data-lucide="pin"></i>固定投稿</div>
+    <h3>固定投稿の考え方</h3>
+    <div class="slide-two-col">
+      <div class="slide-text">
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="pin"></i></div>
+            <div class="item-body">
+              <div class="item-label">プロフィールの一番上に最大3枚固定できる</div>
+              <div class="item-desc">初めて来た人が最初に見る投稿。自己紹介・代表作・受注案内が定番。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="heart"></i></div>
+            <div class="item-body">
+              <div class="item-label">「この人に頼みたい」と思わせる投稿を選ぶ</div>
+              <div class="item-desc">反応が良かったもの・特に力を入れた作品など、信頼につながる投稿を置く。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="move-left"></i></div>
+            <div class="item-body">
+              <div class="item-label">左から順番も意識する</div>
+              <div class="item-desc">最も伝えたいものを左に。定期的に見直して最新の情報に更新する。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insta-img-wrap"
+           data-crop-top="26" data-crop-left="2" data-crop-width="95" data-crop-height="14"
+           onclick="openLightbox(this)">
+        <img src="instagram-sample.png" class="insta-img" alt="Instagram固定投稿例">
+        <div class="anno-box" style="top:26%;left:2%;width:95%;height:14%;"></div>
+        <div class="anno-label" style="top:21%;left:2%;">固定投稿（最大3枚）</div>
+      </div>
+    </div>
+    <div class="slide-num">9 / 13</div>
+  </div>
+
+  <!-- スライド 10: 固定投稿（設定方法と表示） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">使い方</span></div>
+    <div class="section-label"><i data-lucide="pin"></i>固定投稿</div>
+    <h3>設定方法と表示のされ方</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="settings"></i></div>
+        <div class="item-body">
+          <div class="item-label">設定のやり方</div>
+          <div class="item-desc">固定したい投稿を開く → 右上の「…」→「プロフィールに固定」を選ぶ。固定を外すときも同じ手順。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="layout-grid"></i></div>
+        <div class="item-body">
+          <div class="item-label">表示のされ方</div>
+          <div class="item-desc">グリッドの左上から順に最大3枚並ぶ。投稿の左上にピンマークが付き、プロフィールを開いた人が最初に目にする場所になる。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="trending-up"></i></div>
+        <div class="item-body">
+          <div class="item-label">固定投稿の利点</div>
+          <div class="item-desc">フィードの内容が変わっても常にトップに表示される。初めて来た人への第一印象をコントロールでき、受注案内・代表作・自己紹介を常に見せることができる。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">10 / 13</div>
+  </div>
+
+  <!-- スライド 11: 固定投稿（Geminiで作る） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="pin"></i>固定投稿</div>
+    <h3>Geminiで作る</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">固定投稿用のキャプション</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramの固定投稿用キャプションを作ってください。
+投稿の目的：（例：自己紹介 / 代表作の紹介 / 受注案内）
+内容：（例：リアルペット刺繍作家として活動しています。愛するペットを一針一針丁寧に刺繍します）
+文字数：200〜300字
+初めて来た人が「フォローしたい・頼みたい」と思える内容にしてください。</p>
+    </div>
+    <div class="slide-num">11 / 13</div>
+  </div>
+
+  <!-- スライド 12: 投稿頻度と継続（考え方） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">考え方</span></div>
+    <div class="section-label"><i data-lucide="calendar"></i>投稿頻度と継続</div>
+    <h3>継続するための考え方</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="calendar-check"></i></div>
+        <div class="item-body">
+          <div class="item-label">毎日より「決めた頻度を守る」が大事</div>
+          <div class="item-desc">目安：リール週3・フィード週1・ストーリーズ毎日。撮り溜めしておくと投稿に困らない。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="clock"></i></div>
+        <div class="item-body">
+          <div class="item-label">投稿する時間帯を意識する</div>
+          <div class="item-desc">フォロワーが見ている時間に合わせる。昼12時・夜20〜22時が一般的。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="lightbulb"></i></div>
+        <div class="item-body">
+          <div class="item-label">ネタ切れ対策：投稿ネタをリスト化しておく</div>
+          <div class="item-desc">制作中・道具・失敗談・before/afterなど、あらかじめネタをストックしておく。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="bar-chart-2"></i></div>
+        <div class="item-body">
+          <div class="item-label">インサイトを確認して次に活かす</div>
+          <div class="item-desc">どの投稿が見られているか数字で確認する。反応が良い投稿の傾向を把握して続ける。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">12 / 15</div>
+  </div>
+
+  <!-- スライド 13: 投稿頻度と継続（Geminiで作る） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="calendar"></i>投稿頻度と継続</div>
+    <h3>Geminiで作る</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">投稿ネタのリスト</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramの投稿ネタを考えてください。
+活動内容：（例：手刺繍でリアルなペット肖像画を制作・販売）
+発信テーマ：（例：制作過程・完成作品・刺繍の楽しさ・受注案内）
+リール・フィード・ストーリーズそれぞれ5つずつネタを提案してください。
+ネタ切れしにくいように、日常からでも投稿できるアイデアも含めてください。</p>
+    </div>
+    <div class="slide-num">13 / 15</div>
+  </div>
+
+  <!-- スライド 14: インサイト3回チェック -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-think">習慣化</span></div>
+    <div class="section-label"><i data-lucide="bar-chart-2"></i>インサイト</div>
+    <h3>投稿後 3回チェックの習慣</h3>
+    <div class="grid-3">
+      <div class="grid-card">
+        <div class="card-header">
+          <div class="card-icon-wrap"><i data-lucide="sunrise"></i></div>
+          <div class="card-title">翌日チェック</div>
+        </div>
+        <div class="card-desc">リーチ数・いいね・コメント・保存の初速を確認。出だしが良い投稿ほど拡散されやすい。</div>
+      </div>
+      <div class="grid-card">
+        <div class="card-header">
+          <div class="card-icon-wrap"><i data-lucide="calendar"></i></div>
+          <div class="card-title">2日後チェック</div>
+        </div>
+        <div class="card-desc">保存数の伸び・プロフィール訪問数を確認。保存が多い投稿は「また見たい」と思われている証拠。</div>
+      </div>
+      <div class="grid-card">
+        <div class="card-header">
+          <div class="card-icon-wrap"><i data-lucide="trending-up"></i></div>
+          <div class="card-title">1週間後チェック</div>
+        </div>
+        <div class="card-desc">最終リーチ・フォロワー増減を確認。全体の評価を数字で記録して次の投稿に活かす。</div>
+      </div>
+    </div>
+    <div class="note-box" style="background:#f0f4ff;border-color:#c5d3f0;color:#3a5fa0;margin-top:20px;padding:12px 16px;border-radius:8px;border-left:3px solid #c5d3f0;font-size:0.82rem;line-height:1.7;">
+      📊 記録用スプレッドシートを別途用意しています。3回のタイミングで数字を入力していきましょう。
+    </div>
+    <div class="slide-num">14 / 15</div>
+  </div>
+
+  <!-- スライド 15: インサイト Geminiで分析 -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで分析</span></div>
+    <div class="section-label"><i data-lucide="bar-chart-2"></i>インサイト</div>
+    <h3>Geminiでインサイトを分析する</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">数字から見える傾向の分析・次の投稿へのアドバイス</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例（1週間後チェック後に使う）</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramの投稿データを分析してアドバイスをください。
+投稿内容：（例：制作過程のリール、犬の刺繍）
+翌日：リーチ〇〇 / いいね〇〇 / コメント〇〇 / 保存〇〇
+2日後：リーチ〇〇 / 保存〇〇 / プロフィール訪問〇〇
+1週間後：最終リーチ〇〇 / フォロワー増減〇〇
+①この投稿の良かった点・改善点
+②次に投稿するなら何を意識するといいか</p>
+    </div>
+    <div class="slide-num">15 / 15</div>
+  </div>
+
+  <!-- ライトボックス -->
+  <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">✕</span>
+    <div id="lightboxContainer" onclick="event.stopPropagation(); closeLightbox();">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <span class="lightbox-hint">クリックで閉じる</span>
+  </div>
+
+  <!-- 進捗バー -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 6.67%"></div>
+  </div>
+
+  <!-- ナビゲーション -->
+  <div class="nav">
+    <button class="nav-btn" id="prev" onclick="changeSlide(-1)" disabled>← 前へ</button>
+    <span class="nav-counter" id="counter">1 / 15</span>
+    <button class="nav-btn" id="next" onclick="changeSlide(1)">次へ →</button>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function changeSlide(dir) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    slides[current].classList.add('active');
+    lucide.createIcons();
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prev').disabled = current === 0;
+    document.getElementById('next').disabled = current === total - 1;
+    document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function openLightbox(wrap) {
+    const img = wrap.querySelector('img');
+    const cropTop    = parseFloat(wrap.dataset.cropTop)    / 100;
+    const cropLeft   = parseFloat(wrap.dataset.cropLeft)   / 100;
+    const cropWidth  = parseFloat(wrap.dataset.cropWidth)  / 100;
+    const cropHeight = parseFloat(wrap.dataset.cropHeight) / 100;
+
+    const tempImg = new Image();
+    tempImg.onload = function() {
+      const nw = this.naturalWidth;
+      const nh = this.naturalHeight;
+
+      // クロップ領域をピクセルで算出
+      const cropPxW = cropWidth  * nw;
+      const cropPxH = cropHeight * nh;
+
+      // 表示サイズを画面に合わせてスケール
+      const maxW = window.innerWidth  * 0.88;
+      const maxH = window.innerHeight * 0.82;
+      const scale = Math.min(maxW / cropPxW, maxH / cropPxH);
+
+      const dispW = nw * scale;
+      const dispH = nh * scale;
+      const contW = cropPxW * scale;
+      const contH = cropPxH * scale;
+      const offX  = -(cropLeft * nw * scale);
+      const offY  = -(cropTop  * nh * scale);
+
+      const lightboxImg = document.getElementById('lightboxImg');
+      const container   = document.getElementById('lightboxContainer');
+
+      lightboxImg.src              = img.src;
+      lightboxImg.style.width      = dispW + 'px';
+      lightboxImg.style.height     = dispH + 'px';
+      lightboxImg.style.marginLeft = offX + 'px';
+      lightboxImg.style.marginTop  = offY + 'px';
+
+      container.style.width  = contW + 'px';
+      container.style.height = contH + 'px';
+
+      document.getElementById('lightbox').classList.add('open');
+    };
+    tempImg.src = img.src;
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  function copyPrompt(btn) {
+    const text = btn.closest('.prompt-box').querySelector('p').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ コピー済み';
+      setTimeout(() => btn.textContent = 'コピー', 2000);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+  });
+</script>
+</body>
+</html>

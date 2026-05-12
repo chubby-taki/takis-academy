@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI活用投稿作成術</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fdf8f3;
+      --accent: #b5835a;
+      --accent-light: #e8d5c4;
+      --accent-dark: #7d5a3c;
+      --text: #3d2b1f;
+      --sub: #8b6652;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(150deg, #e2c9b5 0%, #cdb090 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 20px;
+    }
+
+    .presentation { width: 100%; max-width: 860px; }
+
+    .slide {
+      display: none;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 52px 64px;
+      min-height: 500px;
+      box-shadow: 0 8px 32px rgba(61,43,31,0.14);
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* タイトルスライド */
+    .slide-title {
+      text-align: center;
+      align-items: center;
+      background: linear-gradient(160deg, #fdf8f3 0%, #f7ede0 100%);
+    }
+    .slide-title .eyebrow {
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+    .slide-title h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 18px;
+    }
+    .slide-title .divider {
+      width: 48px; height: 2px;
+      background: var(--accent);
+      margin: 0 auto 18px;
+      border-radius: 1px;
+    }
+    .slide-title .sub {
+      font-size: 0.92rem;
+      color: var(--sub);
+      line-height: 1.9;
+    }
+
+    /* ステップバッジ */
+    .step-badge {
+      position: absolute;
+      top: 20px; right: 24px;
+    }
+    .step-badge span {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+    .step-info { background: var(--accent-light); color: var(--accent-dark); }
+    .step-ai { background: #dde8ff; color: #3a5fa0; }
+
+    /* セクションラベル */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      padding: 3px 10px 3px 8px;
+      background: var(--accent-light);
+      border-radius: 20px;
+    }
+    .section-label i { width: 11px; height: 11px; stroke: var(--accent); }
+
+    .slide h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 26px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--accent-light);
+    }
+
+    /* アイテムリスト */
+    .items { display: flex; flex-direction: column; gap: 13px; }
+    .item { display: flex; align-items: flex-start; gap: 12px; }
+    .item-icon-wrap {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .item-icon-wrap i { width: 12px; height: 12px; stroke: var(--accent-dark); }
+    .item-label {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+    .item-desc {
+      font-size: 0.83rem;
+      color: var(--sub);
+      line-height: 1.65;
+    }
+
+    /* グリッドカード */
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 4px; }
+    .grid-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      box-shadow: 0 2px 6px rgba(61,43,31,0.08);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .grid-card:hover { transform: translateY(-2px); box-shadow: 0 5px 14px rgba(61,43,31,0.13); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .card-icon-wrap {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon-wrap i { width: 14px; height: 14px; stroke: var(--accent-dark); }
+    .grid-card .card-title {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+    .grid-card .card-desc {
+      font-size: 0.8rem;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+
+    /* プロンプトボックス */
+    .prompt-box {
+      background: #f0f4ff;
+      border: 1px solid #c5d3f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+    .prompt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .prompt-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #4a6fa5;
+      letter-spacing: 0.08em;
+    }
+    .prompt-label i { width: 12px; height: 12px; stroke: #4a6fa5; }
+    .copy-btn {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #4a6fa5;
+      background: white;
+      border: 1px solid #c5d3f0;
+      border-radius: 6px;
+      padding: 3px 10px;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: #dde8ff; }
+    .prompt-box p {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.9;
+      white-space: pre-wrap;
+    }
+
+    /* ハッシュタグバッジ */
+    .tag-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    .tag-large { background: #fde8d8; color: #a0522d; }
+    .tag-medium { background: #e8f5e9; color: #2e7d32; }
+    .tag-small { background: #e8f0fe; color: #1a56b0; }
+
+    /* 進捗バー */
+    .progress-bar {
+      width: 100%; height: 3px;
+      background: rgba(181,131,90,0.2);
+      border-radius: 2px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    /* スライド番号 */
+    .slide-num {
+      position: absolute;
+      bottom: 18px; right: 24px;
+      font-size: 0.72rem;
+      color: rgba(181,131,90,0.45);
+      font-weight: 500;
+    }
+
+    /* ナビゲーション */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 22px;
+      font-size: 0.85rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .nav-btn:hover:not(:disabled) { background: var(--accent-dark); transform: translateY(-1px); }
+    .nav-btn:disabled { background: var(--accent-light); color: #b8967a; cursor: default; }
+    .nav-counter {
+      font-size: 0.82rem;
+      color: var(--accent-dark);
+      min-width: 64px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .slide { padding: 32px 24px; }
+      .slide h3 { font-size: 1.35rem; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .slide-title h1 { font-size: 1.9rem; }
+    }
+
+    @media print {
+      body { background: white; padding: 0; display: block; }
+      .slide { display: flex !important; page-break-after: always; border-radius: 0; box-shadow: none; min-height: 100vh; animation: none; }
+      .nav, .progress-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="presentation">
+
+  <!-- スライド 1: タイトル -->
+  <div class="slide slide-title active">
+    <div class="eyebrow">AI × 手刺繍クリエイターアカデミー</div>
+    <h1>AI活用<br>投稿作成術</h1>
+    <div class="divider"></div>
+    <p class="sub">Geminiを使ってリール・フィード・ストーリーズの<br>投稿をかんたんに作る方法</p>
+    <div class="slide-num">1 / 8</div>
+  </div>
+
+  <!-- スライド 2: リール（説明） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-info">説明</span></div>
+    <div class="section-label"><i data-lucide="play-circle"></i>リール</div>
+    <h3>リールとは</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="users"></i></div>
+        <div class="item-body">
+          <div class="item-label">対象：まだあなたを知らない新規の人</div>
+          <div class="item-desc">フォロワー以外にも広く届く。新しい出会いを作るための投稿。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="target"></i></div>
+        <div class="item-body">
+          <div class="item-label">目的：作品や制作過程を見せてフォロワーを増やす</div>
+          <div class="item-desc">制作過程・タイムラプス・手元アップなど動きのある映像が向いている。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="zap"></i></div>
+        <div class="item-body">
+          <div class="item-label">最初の数秒が勝負</div>
+          <div class="item-desc">冒頭で興味を引けなければスクロールされてしまう。テロップの冒頭に力を入れる。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">2 / 8</div>
+  </div>
+
+  <!-- スライド 3: リール（Gemini活用） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="play-circle"></i>リール</div>
+    <h3>Geminiへの依頼方法</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">テロップの流れ（冒頭・中盤・最後）、キャプション、ハッシュタグ（大中小×1）</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>手刺繍の制作過程を見せる短いリール動画のテロップを作ってください。
+冒頭（3秒）：見る人の興味を引く一言
+中盤：制作のポイントや見どころ
+最後：フォローや保存を促す一言
+あわせてキャプション（100字以内）と、ハッシュタグを大・中・小1つずつ提案してください。</p>
+    </div>
+    <div class="slide-num">3 / 8</div>
+  </div>
+
+  <!-- スライド 4: フィード（説明） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-info">説明</span></div>
+    <div class="section-label"><i data-lucide="image"></i>フィード</div>
+    <h3>フィードとは</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="heart"></i></div>
+        <div class="item-body">
+          <div class="item-label">対象：フォロワー・プロフィールを見に来た人</div>
+          <div class="item-desc">すでに興味を持ってくれている人に届く。プロフィールに残り続ける大切な投稿。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="target"></i></div>
+        <div class="item-body">
+          <div class="item-label">目的：作品の魅力を丁寧に伝えて信頼を積み重ねる</div>
+          <div class="item-desc">完成作品の写真とキャプションで「この人に頼みたい」という気持ちを育てる。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="camera"></i></div>
+        <div class="item-body">
+          <div class="item-label">写真の質とキャプションが重要</div>
+          <div class="item-desc">丁寧に撮った写真に、作品への想いを込めたキャプションを合わせる。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">4 / 8</div>
+  </div>
+
+  <!-- スライド 5: フィード（Gemini活用） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="image"></i>フィード</div>
+    <h3>Geminiへの依頼方法</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">キャプション、ハッシュタグ（大中小×1）</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramのフィード投稿のキャプションを書いてください。
+作品：（例：トイプードル・直径15cm・DMC糸使用）
+想い：（例：はじめて毛並みのグラデーションがうまく表現できた作品です）
+文字数：200〜300字
+トーン：温かく、作り手の気持ちが伝わる言葉で
+あわせてハッシュタグを大・中・小1つずつ提案してください。</p>
+    </div>
+    <div class="slide-num">5 / 8</div>
+  </div>
+
+  <!-- スライド 6: ストーリーズ（説明） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-info">説明</span></div>
+    <div class="section-label"><i data-lucide="circle"></i>ストーリーズ</div>
+    <h3>ストーリーズとは</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="users"></i></div>
+        <div class="item-body">
+          <div class="item-label">対象：すでにフォローしている人</div>
+          <div class="item-desc">フォロワーの画面上部に表示される。毎日見てもらいやすい場所。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="target"></i></div>
+        <div class="item-body">
+          <div class="item-label">目的：日常や制作の裏側を見せて親近感を高める</div>
+          <div class="item-desc">24時間で消えるので気軽に投稿できる。作り込まなくていい。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="message-circle"></i></div>
+        <div class="item-body">
+          <div class="item-label">双方向のやり取りができる</div>
+          <div class="item-desc">アンケートや質問ボックスを使うとフォロワーと会話が生まれる。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">6 / 8</div>
+  </div>
+
+  <!-- スライド 7: ストーリーズ（Gemini活用） -->
+  <div class="slide">
+    <div class="step-badge"><span class="step-ai">Geminiで作る</span></div>
+    <div class="section-label"><i data-lucide="circle"></i>ストーリーズ</div>
+    <h3>Geminiへの依頼方法</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="sparkles"></i></div>
+        <div class="item-body">
+          <div class="item-label">作ってもらうもの</div>
+          <div class="item-desc">写真に添える一言テキスト・アンケートや質問ボックスの文言・他投稿への誘導文、ハッシュタグ（大中小×1）</div>
+        </div>
+      </div>
+    </div>
+    <div class="prompt-box">
+      <div class="prompt-header">
+        <div class="prompt-label"><i data-lucide="clipboard"></i>プロンプト例</div>
+        <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+      </div>
+      <p>Instagramのストーリーズ用テキストを3パターン作ってください。
+内容：（例：制作中の猫の刺繍。毛並みの色を決めているところ）
+① 写真に添える一言テキスト
+② アンケートまたは質問ボックスの文言
+③ フィード投稿への誘導文
+トーン：気軽で親しみやすく
+あわせてハッシュタグを大・中・小1つずつ提案してください。</p>
+    </div>
+    <div class="slide-num">7 / 8</div>
+  </div>
+
+  <!-- スライド 8: ハッシュタグの考え方 -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="hash"></i>ハッシュタグ</div>
+    <h3>大・中・小の使い分け</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="trending-up"></i></div>
+        <div class="item-body">
+          <div class="item-label">大：投稿数が多いハッシュタグ</div>
+          <div class="item-desc">例：#刺繍　多くの人の目に触れるが、埋もれやすい。認知を広げる役割。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="filter"></i></div>
+        <div class="item-body">
+          <div class="item-label">中：ある程度絞られたハッシュタグ</div>
+          <div class="item-desc">例：#ペット刺繍　興味のある人に届きやすい。バランスが取れている。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="crosshair"></i></div>
+        <div class="item-body">
+          <div class="item-label">小：ニッチで競合が少ないハッシュタグ</div>
+          <div class="item-desc">例：#リアルペット刺繍　投稿数が少ないぶん上位に表示されやすく、熱量の高い人に届く。</div>
+        </div>
+      </div>
+    </div>
+    <div class="tag-row">
+      <span class="tag-badge tag-large"># 大　認知を広げる</span>
+      <span class="tag-badge tag-medium"># 中　興味層に届く</span>
+      <span class="tag-badge tag-small"># 小　熱量の高い人に届く</span>
+    </div>
+    <div class="slide-num">8 / 8</div>
+  </div>
+
+  <!-- 進捗バー -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 12.5%"></div>
+  </div>
+
+  <!-- ナビゲーション -->
+  <div class="nav">
+    <button class="nav-btn" id="prev" onclick="changeSlide(-1)" disabled>← 前へ</button>
+    <span class="nav-counter" id="counter">1 / 8</span>
+    <button class="nav-btn" id="next" onclick="changeSlide(1)">次へ →</button>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function changeSlide(dir) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    slides[current].classList.add('active');
+    lucide.createIcons();
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prev').disabled = current === 0;
+    document.getElementById('next').disabled = current === total - 1;
+    document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function copyPrompt(btn) {
+    const text = btn.closest('.prompt-box').querySelector('p').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ コピー済み';
+      setTimeout(() => btn.textContent = 'コピー', 2000);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>インサイト記録シート</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --accent: #b5835a;
+      --accent-light: #e8d5c4;
+      --accent-dark: #7d5a3c;
+      --text: #3d2b1f;
+      --sub: #8b6652;
+      --bg: #fdf8f3;
+      --white: #ffffff;
+      --day1: #fff8f0;
+      --day2: #f0f7ff;
+      --week1: #f0fff4;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #e8d5c4;
+      padding: 24px 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 28px 36px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(61,43,31,0.1);
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .header .eyebrow {
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .btn-group { display: flex; gap: 10px; }
+    .add-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .add-btn:hover { background: var(--accent-dark); }
+    .export-btn {
+      background: white;
+      color: var(--accent-dark);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .export-btn:hover { background: var(--accent-light); }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--sub);
+    }
+    .legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 3px;
+    }
+
+    .records { display: flex; flex-direction: column; gap: 16px; }
+
+    .record-card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(61,43,31,0.1);
+      overflow: hidden;
+    }
+
+    .record-header {
+      background: var(--accent);
+      color: white;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .record-header input[type="date"],
+    .record-header select,
+    .record-header input[type="text"] {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.85rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      outline: none;
+    }
+    .record-header input[type="date"]:focus,
+    .record-header select:focus,
+    .record-header input[type="text"]:focus {
+      background: rgba(255,255,255,0.3);
+    }
+    .record-header input[type="text"] { width: 240px; }
+    .record-header select option { background: var(--accent-dark); }
+    .record-header-left { display: flex; align-items: center; gap: 12px; }
+    .record-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      opacity: 0.7;
+      white-space: nowrap;
+    }
+    .delete-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .delete-btn:hover { background: rgba(255,255,255,0.35); }
+
+    .checks {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .check-section {
+      padding: 18px 20px;
+      border-right: 1px solid #f0ebe4;
+    }
+    .check-section:last-child { border-right: none; }
+    .check-section.day1 { background: var(--day1); }
+    .check-section.day2 { background: var(--day2); }
+    .check-section.week1 { background: var(--week1); }
+
+    .check-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .check-title .badge {
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .day1 .badge { background: #ffd5a8; color: #8b4500; }
+    .day2 .badge { background: #c5d3f0; color: #3a5fa0; }
+    .week1 .badge { background: #a8d5b5; color: #1a6b3a; }
+
+    .check-date {
+      font-size: 0.72rem;
+      color: var(--sub);
+      margin-bottom: 10px;
+    }
+
+    .metrics { display: flex; flex-direction: column; gap: 8px; }
+    .metric {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .metric-label {
+      font-size: 0.78rem;
+      color: var(--sub);
+      white-space: nowrap;
+      min-width: 80px;
+    }
+    .metric input[type="number"],
+    .metric input[type="text"] {
+      flex: 1;
+      border: 1px solid #e0d4c6;
+      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: 0.85rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      outline: none;
+      text-align: right;
+      min-width: 0;
+    }
+    .metric input:focus { border-color: var(--accent); }
+    .metric-unit {
+      font-size: 0.72rem;
+      color: var(--sub);
+      white-space: nowrap;
+    }
+
+    .memo-row {
+      padding: 12px 20px;
+      border-top: 1px solid #f0ebe4;
+      background: var(--bg);
+    }
+    .memo-row textarea {
+      width: 100%;
+      border: 1px solid #e0d4c6;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.82rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--text);
+      resize: vertical;
+      min-height: 52px;
+      outline: none;
+    }
+    .memo-row textarea:focus { border-color: var(--accent); }
+    .memo-label {
+      font-size: 0.72rem;
+      color: var(--sub);
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--sub);
+      font-size: 0.9rem;
+      background: var(--white);
+      border-radius: 12px;
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .add-btn, .delete-btn { display: none; }
+      .record-card { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 700px) {
+      .checks { grid-template-columns: 1fr; }
+      .check-section { border-right: none; border-bottom: 1px solid #f0ebe4; }
+      .record-header input[type="text"] { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="eyebrow">AI × 手刺繍クリエイターアカデミー</div>
+        <h1>インサイト記録シート</h1>
+      </div>
+      <div class="btn-group">
+        <button class="add-btn" onclick="addRecord()">＋ 投稿を追加</button>
+        <button class="export-btn" onclick="exportCSV()">↓ CSVで書き出し</button>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#ffd5a8;"></div>
+        翌日チェック：初速（リーチ・いいね・コメント・保存）
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#c5d3f0;"></div>
+        2日後チェック：保存の伸び・プロフィール訪問
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:#a8d5b5;"></div>
+        1週間後チェック：最終リーチ・フォロワー増減
+      </div>
+    </div>
+  </div>
+
+  <div class="records" id="records">
+    <div class="empty-state" id="emptyState">「＋ 投稿を追加」ボタンから記録を始めましょう</div>
+  </div>
+
+</div>
+
+<script>
+  let count = 0;
+
+  function addRecord() {
+    count++;
+    const emptyState = document.getElementById('emptyState');
+    if (emptyState) emptyState.remove();
+
+    const today = new Date().toISOString().split('T')[0];
+
+    const card = document.createElement('div');
+    card.className = 'record-card';
+    card.id = 'record-' + count;
+    card.innerHTML = `
+      <div class="record-header">
+        <div class="record-header-left">
+          <span class="record-num">#${count}</span>
+          <input type="date" value="${today}" title="投稿日">
+          <select title="投稿種類">
+            <option>リール</option>
+            <option>フィード</option>
+            <option>ストーリーズ</option>
+          </select>
+          <input type="text" placeholder="投稿テーマ・内容">
+        </div>
+        <button class="delete-btn" onclick="deleteRecord(${count})">削除</button>
+      </div>
+      <div class="checks">
+        <div class="check-section day1">
+          <div class="check-title">
+            <span class="badge">翌日</span> 翌日チェック
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-label">リーチ数</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">人</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">いいね</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">件</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">コメント</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">件</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">保存</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">件</span>
+            </div>
+          </div>
+        </div>
+        <div class="check-section day2">
+          <div class="check-title">
+            <span class="badge">2日後</span> 2日後チェック
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-label">リーチ数</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">人</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">保存累計</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">件</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">プロフ訪問</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">回</span>
+            </div>
+          </div>
+        </div>
+        <div class="check-section week1">
+          <div class="check-title">
+            <span class="badge">1週間後</span> 1週間後チェック
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-label">最終リーチ</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">人</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">最終保存</span>
+              <input type="number" placeholder="0" min="0">
+              <span class="metric-unit">件</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">フォロワー増減</span>
+              <input type="number" placeholder="0">
+              <span class="metric-unit">人</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="memo-row">
+        <div class="memo-label">メモ・気づき・次回への改善点</div>
+        <textarea placeholder="例：保存が多かった。次は冒頭のテキストを変えてみる。"></textarea>
+      </div>
+    `;
+    document.getElementById('records').appendChild(card);
+  }
+
+  function exportCSV() {
+    const cards = document.querySelectorAll('.record-card');
+    if (cards.length === 0) {
+      alert('記録がありません。先に投稿を追加してください。');
+      return;
+    }
+
+    const headers = [
+      '#', '投稿日', '種類', 'テーマ・内容',
+      '翌日_リーチ', '翌日_いいね', '翌日_コメント', '翌日_保存',
+      '2日後_リーチ', '2日後_保存累計', '2日後_プロフィール訪問',
+      '1週間後_最終リーチ', '1週間後_最終保存', '1週間後_フォロワー増減',
+      'メモ'
+    ];
+
+    const rows = [headers];
+
+    cards.forEach((card, i) => {
+      const inputs = card.querySelectorAll('input, select, textarea');
+      const date    = inputs[0].value;
+      const type    = inputs[1].value;
+      const theme   = inputs[2].value;
+      const nums    = Array.from(card.querySelectorAll('.metric input')).map(el => el.value || '');
+      const memo    = card.querySelector('textarea').value.replace(/\n/g, ' ');
+
+      rows.push([i + 1, date, type, theme, ...nums, memo]);
+    });
+
+    const csv = rows.map(row =>
+      row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')
+    ).join('\n');
+
+    const bom = '﻿'; // Google Sheets での文字化け防止
+    const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const date = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `インサイト記録_${date}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function deleteRecord(id) {
+    const card = document.getElementById('record-' + id);
+    if (card) card.remove();
+    if (document.getElementById('records').children.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.id = 'emptyState';
+      empty.textContent = '「＋ 投稿を追加」ボタンから記録を始めましょう';
+      document.getElementById('records').appendChild(empty);
+    }
+  }
+</script>
+</body>
+</html>

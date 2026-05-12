@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>完成作品の撮影方法</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fdf8f3;
+      --accent: #b5835a;
+      --accent-light: #e8d5c4;
+      --accent-dark: #7d5a3c;
+      --text: #3d2b1f;
+      --sub: #8b6652;
+      --white: #ffffff;
+      --ok: #2e7d32;
+      --ok-bg: #e8f5e9;
+      --ng: #c0392b;
+      --ng-bg: #fde8e8;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: linear-gradient(150deg, #e2c9b5 0%, #cdb090 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px 20px;
+    }
+
+    .presentation { width: 100%; max-width: 860px; }
+
+    .slide {
+      display: none;
+      background: var(--bg);
+      border-radius: 14px;
+      padding: 52px 64px;
+      min-height: 500px;
+      box-shadow: 0 8px 32px rgba(61,43,31,0.14);
+      position: relative;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-title {
+      text-align: center;
+      align-items: center;
+      background: linear-gradient(160deg, #fdf8f3 0%, #f7ede0 100%);
+    }
+    .slide-title .eyebrow {
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+    .slide-title h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.35;
+      margin-bottom: 18px;
+    }
+    .slide-title .divider {
+      width: 48px; height: 2px;
+      background: var(--accent);
+      margin: 0 auto 18px;
+      border-radius: 1px;
+    }
+    .slide-title .sub {
+      font-size: 0.92rem;
+      color: var(--sub);
+      line-height: 1.9;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      padding: 3px 10px 3px 8px;
+      background: var(--accent-light);
+      border-radius: 20px;
+    }
+    .section-label i { width: 11px; height: 11px; stroke: var(--accent); }
+
+    .slide h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 26px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--accent-light);
+    }
+
+    /* アイテムリスト */
+    .items { display: flex; flex-direction: column; gap: 13px; }
+    .item { display: flex; align-items: flex-start; gap: 12px; }
+    .item-icon-wrap {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .item-icon-wrap.ok { background: var(--ok-bg); }
+    .item-icon-wrap.ng { background: var(--ng-bg); }
+    .item-icon-wrap i { width: 12px; height: 12px; stroke: var(--accent-dark); }
+    .item-icon-wrap.ok i { stroke: var(--ok); }
+    .item-icon-wrap.ng i { stroke: var(--ng); }
+
+    .item-label {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+    .item-label.ok { color: var(--ok); }
+    .item-label.ng { color: var(--ng); }
+    .item-desc {
+      font-size: 0.83rem;
+      color: var(--sub);
+      line-height: 1.65;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .tag-ok { background: var(--ok-bg); color: var(--ok); }
+    .tag-ng { background: var(--ng-bg); color: var(--ng); }
+
+    /* グリッドカード */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+    .grid-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      box-shadow: 0 2px 6px rgba(61,43,31,0.08);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .grid-card:hover { transform: translateY(-2px); box-shadow: 0 5px 14px rgba(61,43,31,0.13); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .card-icon-wrap {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--accent-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon-wrap i { width: 14px; height: 14px; stroke: var(--accent-dark); }
+    .grid-card .card-title {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 0.88rem;
+    }
+    .grid-card .card-desc {
+      font-size: 0.8rem;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+
+    /* サイズテーブル */
+    .size-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .size-table th {
+      background: var(--accent);
+      color: white;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .size-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--accent-light);
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .size-table tr:last-child td { border-bottom: none; }
+    .size-table tr:nth-child(even) td { background: #faf5f0; }
+    .size-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 2px 12px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+    .recommend-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: var(--ok);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+
+    /* ノートボックス */
+    .note-box {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-top: 18px;
+      font-size: 0.82rem;
+      color: var(--accent-dark);
+      line-height: 1.7;
+    }
+
+    /* 進捗バー */
+    .progress-bar {
+      width: 100%; height: 3px;
+      background: rgba(181,131,90,0.2);
+      border-radius: 2px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .slide-num {
+      position: absolute;
+      bottom: 18px; right: 24px;
+      font-size: 0.72rem;
+      color: rgba(181,131,90,0.45);
+      font-weight: 500;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .nav-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 22px;
+      font-size: 0.85rem;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .nav-btn:hover:not(:disabled) { background: var(--accent-dark); transform: translateY(-1px); }
+    .nav-btn:disabled { background: var(--accent-light); color: #b8967a; cursor: default; }
+    .nav-counter {
+      font-size: 0.82rem;
+      color: var(--accent-dark);
+      min-width: 64px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .slide { padding: 32px 24px; }
+      .slide h3 { font-size: 1.35rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .slide-title h1 { font-size: 1.9rem; }
+    }
+
+    @media print {
+      body { background: white; padding: 0; display: block; }
+      .slide { display: flex !important; page-break-after: always; border-radius: 0; box-shadow: none; min-height: 100vh; animation: none; }
+      .nav, .progress-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="presentation">
+
+  <!-- スライド 1: タイトル -->
+  <div class="slide slide-title active">
+    <div class="eyebrow">AI × 手刺繍クリエイターアカデミー</div>
+    <h1>完成作品の<br>撮影方法</h1>
+    <div class="divider"></div>
+    <p class="sub">作品の魅力をSNSで伝えるための<br>撮影・編集の基本</p>
+    <div class="slide-num">1 / 9</div>
+  </div>
+
+  <!-- スライド 2: 用意するもの -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="camera"></i>撮影の準備</div>
+    <h3>用意するもの</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="smartphone"></i></div>
+        <div class="item-body">
+          <div class="item-label">スマートフォン</div>
+          <div class="item-desc">普段お使いのものでOK。特別なカメラは必要ない。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="video"></i></div>
+        <div class="item-body">
+          <div class="item-label">三脚</div>
+          <div class="item-desc">動画撮影・手元撮影のときに使用。写真のみの場合は不要。テーブルに取り付けられるタイプが使いやすい。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="square"></i></div>
+        <div class="item-body">
+          <div class="item-label">背景素材</div>
+          <div class="item-desc">100均で十分。A3サイズの模造紙（白・生成り）、レンガや板の模様がついた背景紙など。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="feather"></i></div>
+        <div class="item-body">
+          <div class="item-label">小物類（世界観を作る）</div>
+          <div class="item-desc">造花・ガラスの瓶・おしゃれな糸切りバサミ・DMCの糸など。写真映えするものを控えめに添える。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">2 / 9</div>
+  </div>
+
+  <!-- スライド 3: 光の選び方 -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="sun"></i>撮影の準備</div>
+    <h3>光の選び方</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
+      <!-- OK列 -->
+      <div style="background:#f0fff4;border-radius:10px;padding:18px 20px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <div class="item-icon-wrap ok" style="width:28px;height:28px;"><i data-lucide="check-circle"></i></div>
+          <span style="font-size:0.85rem;font-weight:700;color:#2e7d32;">おすすめの光</span>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap ok"><i data-lucide="cloud"></i></div>
+            <div class="item-body">
+              <div class="item-label ok">曇りの日の窓際</div>
+              <div class="item-desc">光が柔らかく拡散し、糸の光沢が均一に出る。最もおすすめ。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap ok"><i data-lucide="wind"></i></div>
+            <div class="item-body">
+              <div class="item-label ok">レースのカーテン越し</div>
+              <div class="item-desc">晴れの日でも直射日光を和らげ、柔らかい光が作れる。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- NG列 -->
+      <div style="background:#fff5f5;border-radius:10px;padding:18px 20px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <div class="item-icon-wrap ng" style="width:28px;height:28px;"><i data-lucide="x-circle"></i></div>
+          <span style="font-size:0.85rem;font-weight:700;color:#c0392b;">避けたい光</span>
+        </div>
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap ng"><i data-lucide="sun"></i></div>
+            <div class="item-body">
+              <div class="item-label ng">直射日光</div>
+              <div class="item-desc">影が強くなり、毛並みの繊細な質感が潰れて見える。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap ng"><i data-lucide="lamp"></i></div>
+            <div class="item-body">
+              <div class="item-label ng">室内の蛍光灯・電球</div>
+              <div class="item-desc">色温度がずれて糸の色が正確に写らない。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">3 / 9</div>
+  </div>
+
+  <!-- スライド 4: スマホの設定 -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="settings"></i>撮影の基本</div>
+    <h3>スマホの設定</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="grid"></i></div>
+        <div class="item-body">
+          <div class="item-label">グリッド線をオン</div>
+          <div class="item-desc">水平・垂直を揃えて傾きのない写真に。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="zap-off"></i></div>
+        <div class="item-body">
+          <div class="item-label">HDRをオン・フラッシュはオフ</div>
+          <div class="item-desc">HDRで白飛びや黒つぶれを防ぐ。フラッシュは自然光を活かすためオフにする。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="zoom-in"></i></div>
+        <div class="item-body">
+          <div class="item-label">ズームは使わない</div>
+          <div class="item-desc">デジタルズームは画質が落ちる。大きく写したいときは体ごと近づける。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="aperture"></i></div>
+        <div class="item-body">
+          <div class="item-label">ピントは瞳か鼻に・セルフタイマーを使う</div>
+          <div class="item-desc">画面をタップしてピントと露出を手動で合わせる。三脚使用時はセルフタイマーでブレを防ぐ。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">5 / 10</div>
+  </div>
+
+  <!-- スライド 5: フラットレイ -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="settings"></i>撮影の基本 ①</div>
+    <h3>フラットレイ（真上から）</h3>
+    <div style="display:flex;gap:24px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="maximize"></i></div>
+            <div class="item-body">
+              <div class="item-label">三脚を高く設定して真上から撮る</div>
+              <div class="item-desc">額装した作品に向いており、Instagram正方形（1:1）に収まりがよい。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="layout"></i></div>
+            <div class="item-body">
+              <div class="item-label">背景紙の上に作品を置き小物で世界観を作る</div>
+              <div class="item-desc">白・生成りの布や背景紙の上に置く。DMC糸・バサミ・造花・ガラス瓶を周りに添える。小物は控えめに。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="sun"></i></div>
+            <div class="item-body">
+              <div class="item-label">窓際の自然光で撮る</div>
+              <div class="item-desc">柔らかい光で撮ると糸の色が正確に出る。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 220px;cursor:zoom-in;" onclick="openLightbox('photo_props.jpg')">
+        <div style="overflow:hidden;border-radius:10px;box-shadow:0 4px 16px rgba(61,43,31,0.18);">
+          <img src="photo_props.jpg" style="width:220px;display:block;" alt="フラットレイ例">
+        </div>
+        <div style="font-size:0.68rem;color:var(--sub);text-align:center;margin-top:6px;">タップで拡大</div>
+      </div>
+    </div>
+    <div class="slide-num">5 / 9</div>
+  </div>
+
+  <!-- スライド 6: 斜め45度 -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="settings"></i>撮影の基本 ②</div>
+    <h3>斜め45度</h3>
+    <div style="display:flex;gap:24px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="rotate-cw"></i></div>
+            <div class="item-body">
+              <div class="item-label">作品を立てかけるか持って斜めから撮る</div>
+              <div class="item-desc">背景は白か生成りが基本。小物を斜め後ろに添えると奥行きが出る。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="sun"></i></div>
+            <div class="item-body">
+              <div class="item-label">サイドライトと組み合わせると効果的</div>
+              <div class="item-desc">窓を横に置いて斜めから光を当てると毛並みの立体感が最大になる。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="eye"></i></div>
+            <div class="item-body">
+              <div class="item-label">刺繍の質感が最も伝わる構図</div>
+              <div class="item-desc">糸の凹凸や毛並みのリアルな立体感が伝わり、作品の魅力を最大限に引き出せる。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:0 0 220px;cursor:zoom-in;" onclick="openLightbox('photo_angle45.jpg')">
+        <div style="overflow:hidden;border-radius:10px;box-shadow:0 4px 16px rgba(61,43,31,0.18);">
+          <img src="photo_angle45.jpg" style="width:220px;display:block;" alt="斜め45度例">
+        </div>
+        <div style="font-size:0.68rem;color:var(--sub);text-align:center;margin-top:6px;">タップで拡大</div>
+      </div>
+    </div>
+    <div class="slide-num">6 / 9</div>
+  </div>
+
+  <!-- スライド 7: 壁に飾って撮影 -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="settings"></i>撮影の基本 ③</div>
+    <h3>壁に飾って撮影</h3>
+    <div class="items">
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="monitor"></i></div>
+        <div class="item-body">
+          <div class="item-label">実際に飾った状態を正面から撮る</div>
+          <div class="item-desc">「家に飾ったときのイメージ」が伝わりやすく、受注につながりやすい。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="leaf"></i></div>
+        <div class="item-body">
+          <div class="item-label">周りに小物や植物を添えてもよい</div>
+          <div class="item-desc">ドライフラワーやフェイクグリーンを壁に添えると、インテリアとしての魅力が伝わる。</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon-wrap"><i data-lucide="home"></i></div>
+        <div class="item-body">
+          <div class="item-label">「このお部屋に飾りたい」と思わせる写真を目指す</div>
+          <div class="item-desc">生活空間に馴染む雰囲気を演出することでお客様の購買イメージにつながる。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">7 / 9</div>
+  </div>
+
+  <!-- スライド 9（旧7）: 編集 -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="sliders"></i>仕上げ</div>
+    <h3>iPhone純正アプリで編集する</h3>
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <div style="flex:1;min-width:0;">
+        <div class="items">
+          <div class="item">
+            <div class="item-icon-wrap"><i data-lucide="sliders"></i></div>
+            <div class="item-body">
+              <div class="item-label">調整する項目</div>
+              <div class="item-desc">露光量・コントラスト・色温度・シャープネス・彩度。写真アプリの「調整」タブで全て調整できる。</div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="item-icon-wrap ng"><i data-lucide="alert-triangle"></i></div>
+            <div class="item-body">
+              <div class="item-label ng">やりすぎない</div>
+              <div class="item-desc">加工しすぎると実物と見た目が変わり、「思ったのと違う」と感じさせてしまう。自然な仕上がりを心がける。</div>
+            </div>
+          </div>
+        </div>
+        <div class="note-box" style="margin-top:14px;">慣れてきたら Lightroom Mobile・Snapseed なども試してみましょう。</div>
+      </div>
+      <div style="flex:0 0 130px;">
+        <div style="overflow:hidden;border-radius:10px;box-shadow:0 4px 12px rgba(61,43,31,0.15);">
+          <img src="photo_edit2.jpg" style="width:130px;display:block;" alt="iPhone編集画面">
+        </div>
+        <div style="font-size:0.68rem;color:var(--sub);text-align:center;margin-top:6px;">iPhone純正アプリの編集画面</div>
+      </div>
+    </div>
+    <div class="slide-num">8 / 9</div>
+  </div>
+
+  <!-- スライド 10: SNSサイズ -->
+  <div class="slide">
+    <div class="section-label"><i data-lucide="sliders"></i>仕上げ</div>
+    <h3>SNS投稿時のサイズ比率</h3>
+    <table class="size-table">
+      <thead>
+        <tr>
+          <th>比率</th>
+          <th>用途・特徴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="size-badge">1 : 1</span></td>
+          <td>フィード（正方形）。どんな構図もまとまって見える。</td>
+        </tr>
+        <tr>
+          <td><span class="size-badge">4 : 5</span></td>
+          <td>フィード（縦長）。画面占有率が高くスクロールが止まりやすい。<span class="recommend-badge">おすすめ</span></td>
+        </tr>
+        <tr>
+          <td><span class="size-badge">9 : 16</span></td>
+          <td>ストーリーズ・リール。縦いっぱいに広がる迫力のある見せ方。</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="slide-num">9 / 9</div>
+  </div>
+
+  <!-- ライトボックス -->
+  <div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;">
+    <img id="lightboxImg" src="" style="max-width:90vw;max-height:90vh;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+  </div>
+
+  <!-- 進捗バー -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 11.1%"></div>
+  </div>
+
+  <!-- ナビゲーション -->
+  <div class="nav">
+    <button class="nav-btn" id="prev" onclick="changeSlide(-1)" disabled>← 前へ</button>
+    <span class="nav-counter" id="counter">1 / 9</span>
+    <button class="nav-btn" id="next" onclick="changeSlide(1)">次へ →</button>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function changeSlide(dir) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(total - 1, current + dir));
+    slides[current].classList.add('active');
+    lucide.createIcons();
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prev').disabled = current === 0;
+    document.getElementById('next').disabled = current === total - 1;
+    document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    lb.style.display = 'flex';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+</body>
+</html>
