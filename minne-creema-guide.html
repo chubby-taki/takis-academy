@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>minne & Creema 完全ガイド</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #ff8a65;
+    --orange-light: #fff3ef;
+    --indigo: #5c6bc0;
+    --indigo-light: #eef0fb;
+    --green: #66bb6a;
+    --green-light: #f1f8f1;
+    --yellow: #ffd54f;
+    --yellow-light: #fffde7;
+    --minne: #f06292;
+    --minne-light: #fce4ec;
+    --creema: #7986cb;
+    --creema-light: #e8eaf6;
+    --bg: #fafafa;
+    --card: #ffffff;
+    --text: #37474f;
+    --text-light: #90a4ae;
+    --border: #eceff1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  /* Hero */
+  .hero { background: linear-gradient(135deg, var(--minne) 0%, var(--indigo) 100%); color: white; padding: 3rem 2rem; text-align: center; }
+  .hero h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 1.5rem; }
+  .badges { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 0.3rem 0.9rem; font-size: 0.85rem; }
+
+  /* TLDR */
+  .tldr { background: var(--yellow-light); border-left: 5px solid var(--yellow); margin: 2rem auto; max-width: 860px; padding: 1.5rem 2rem; border-radius: 0 12px 12px 0; }
+  .tldr-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: #f57f17; margin-bottom: 0.8rem; }
+  .tldr ul { list-style: none; }
+  .tldr li { padding: 0.3rem 0; padding-left: 1.2rem; position: relative; font-size: 0.95rem; }
+  .tldr li::before { content: "▶"; position: absolute; left: 0; color: var(--yellow); font-size: 0.7rem; top: 0.5rem; }
+
+  /* Section */
+  section { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-title::after { content: ""; flex: 1; height: 2px; background: var(--border); }
+
+  /* 2-col grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+  /* Card */
+  .card { background: var(--card); border-radius: 14px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .card-minne { border-top: 4px solid var(--minne); }
+  .card-creema { border-top: 4px solid var(--creema); }
+  .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+  .card-icon { font-size: 1.6rem; }
+  .card-title { font-size: 1rem; font-weight: 700; }
+
+  /* Platform badge */
+  .badge-minne { background: var(--minne-light); color: var(--minne); border-radius: 20px; padding: 0.2rem 0.8rem; font-size: 0.8rem; font-weight: 700; display: inline-block; }
+  .badge-creema { background: var(--creema-light); color: var(--creema); border-radius: 20px; padding: 0.2rem 0.8rem; font-size: 0.8rem; font-weight: 700; display: inline-block; }
+  .badge-both { background: #f3e5f5; color: #7b1fa2; border-radius: 20px; padding: 0.2rem 0.8rem; font-size: 0.8rem; font-weight: 700; display: inline-block; }
+
+  /* Stat */
+  .stat-num { font-size: 1.8rem; font-weight: 700; color: var(--orange); }
+  .stat-label { font-size: 0.8rem; color: var(--text-light); }
+
+  /* Table */
+  .compare-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .compare-table th { padding: 0.9rem 1.2rem; text-align: center; font-weight: 700; font-size: 0.9rem; }
+  .compare-table th.minne-col { background: var(--minne-light); color: var(--minne); }
+  .compare-table th.creema-col { background: var(--creema-light); color: var(--creema); }
+  .compare-table th.label-col { background: var(--bg); color: var(--text-light); font-size: 0.8rem; text-align: left; }
+  .compare-table td { padding: 0.8rem 1.2rem; border-top: 1px solid var(--border); font-size: 0.9rem; text-align: center; }
+  .compare-table td.label-col { text-align: left; color: var(--text-light); font-size: 0.85rem; }
+  .highlight { color: var(--orange); font-weight: 700; }
+
+  /* Step flow */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; gap: 1.2rem; padding: 1rem 0; position: relative; }
+  .step:not(:last-child)::after { content: ""; position: absolute; left: 22px; top: 52px; width: 2px; height: calc(100% - 12px); background: var(--border); }
+  .step-num { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; z-index: 1; }
+  .step-num-minne { background: var(--minne); color: white; }
+  .step-num-creema { background: var(--creema); color: white; }
+  .step-body { padding-top: 0.5rem; flex: 1; }
+  .step-body strong { display: block; font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .step-body span { font-size: 0.85rem; color: var(--text-light); }
+  .step-note { background: var(--yellow-light); border-radius: 8px; padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #f57f17; margin-top: 0.3rem; display: inline-block; }
+
+  /* Point cards */
+  .point-card { background: var(--card); border-radius: 12px; padding: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .point-emoji { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+  .point-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .point-text { font-size: 0.82rem; color: var(--text-light); }
+
+  /* Tag pills */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+  .tag { background: var(--orange-light); color: var(--orange); border-radius: 20px; padding: 0.25rem 0.7rem; font-size: 0.78rem; font-weight: 500; }
+  .tag-creema { background: var(--creema-light); color: var(--creema); }
+
+  /* Emphasis box */
+  .emph-box { background: linear-gradient(135deg, var(--orange-light), #fff); border-radius: 14px; padding: 1.5rem; border-left: 5px solid var(--orange); }
+  .emph-box h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; color: var(--orange); }
+  .emph-box ul { list-style: none; }
+  .emph-box li { padding: 0.3rem 0; font-size: 0.9rem; padding-left: 1.2rem; position: relative; }
+  .emph-box li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 2rem; color: var(--text-light); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 1rem 0; }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.6rem; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🧵 minne & Creema 完全ガイド</h1>
+  <p>アカデミー資料 — 客層・アカウント作成・売れるコツ</p>
+  <div class="badges">
+    <span class="badge">📅 2026-05-30</span>
+    <span class="badge">👩‍🎨 ハンドメイド作家向け</span>
+    <span class="badge">6セクション</span>
+  </div>
+</div>
+
+<!-- TLDR -->
+<div class="tldr" style="margin-top:2rem;">
+  <div class="tldr-label">Too Long; Didn't Read</div>
+  <ul>
+    <li>minneは20〜30代女性中心・トレンド重視・低価格OK。Creemaは30代以上・品質重視・高価格でも買う</li>
+    <li>リアルペット刺繍の価格帯・世界観はCreemaの客層と相性が良い。両方に出品するのが理想</li>
+    <li>Creemaは「クリエイター登録」が別途必要。プロフィール完成度100%を目指すと検索で有利</li>
+    <li>写真の1枚目が命。明るい背景・商品メイン・サイズ感がわかる写真を用意する</li>
+    <li>タグ・キーワードはニッチを攻める。「ペット刺繍」より「リアルペット刺繍 オーダー」の方が届く</li>
+  </ul>
+</div>
+
+<!-- Section 1: 客層比較 -->
+<section>
+  <div class="section-title">👥 客層の違い</div>
+  <div class="grid-2">
+    <div class="card card-minne">
+      <div class="card-header">
+        <span class="card-icon">🌸</span>
+        <div>
+          <span class="badge-minne">minne</span>
+          <div class="card-title" style="margin-top:0.3rem;">国内最大 89万クリエイター</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div><div class="stat-num" style="color:var(--minne);">20〜30代</div><div class="stat-label">購買の中心年齢層</div></div>
+        <div><div class="stat-num" style="color:var(--minne);">90%</div><div class="stat-label">スマホからのアクセス</div></div>
+      </div>
+      <div class="divider"></div>
+      <ul style="list-style:none;font-size:0.88rem;margin-top:0.8rem;">
+        <li style="padding:0.25rem 0;">🛍️ トレンド・かわいさ重視</li>
+        <li style="padding:0.25rem 0;">💰 価格も判断基準のひとつ</li>
+        <li style="padding:0.25rem 0;">📱 アプリで気軽にショッピング</li>
+        <li style="padding:0.25rem 0;">👰 未婚の若い女性が多い</li>
+        <li style="padding:0.25rem 0;">🎁 プレゼント用途も多い</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">にぎやか</span>
+        <span class="tag">かわいい系</span>
+        <span class="tag">初心者〜プロ混在</span>
+      </div>
+    </div>
+    <div class="card card-creema">
+      <div class="card-header">
+        <span class="card-icon">💎</span>
+        <div>
+          <span class="badge-creema">Creema</span>
+          <div class="card-title" style="margin-top:0.3rem;">厳選 26万クリエイター</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div><div class="stat-num" style="color:var(--creema);">30代〜</div><div class="stat-label">購買の中心年齢層</div></div>
+        <div><div class="stat-num" style="color:var(--creema);">5,628円</div><div class="stat-label">平均購入単価</div></div>
+      </div>
+      <div class="divider"></div>
+      <ul style="list-style:none;font-size:0.88rem;margin-top:0.8rem;">
+        <li style="padding:0.25rem 0;">✨ 素材・品質・こだわりを評価</li>
+        <li style="padding:0.25rem 0;">💰 高くても良いものを買う意識</li>
+        <li style="padding:0.25rem 0;">🎨 大人っぽく洗練された作品好き</li>
+        <li style="padding:0.25rem 0;">💻 PC・スマホ両方から購入</li>
+        <li style="padding:0.25rem 0;">🧵 ものづくりへの理解が深い</li>
+      </ul>
+      <div class="tags">
+        <span class="tag tag-creema">上質</span>
+        <span class="tag tag-creema">大人向け</span>
+        <span class="tag tag-creema">セミプロ〜プロ向き</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ペット刺繍の示唆 -->
+  <div class="emph-box" style="margin-top:1.5rem;">
+    <h3>🐾 リアルペット刺繍との相性</h3>
+    <ul>
+      <li>価格帯（3万円〜）はCreemaの客層と一致。「高くても本物が欲しい」人がいる</li>
+      <li>minneは認知獲得・間口を広げるのに有効。Creemaで成約を狙うイメージ</li>
+      <li>両方に出品して、Instagramからそれぞれのショップへ誘導するのが理想</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Section 2: 基本スペック比較 -->
+<section>
+  <div class="section-title">📊 基本スペック比較</div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th class="label-col">項目</th>
+        <th class="minne-col">🌸 minne</th>
+        <th class="creema-col">💎 Creema</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label-col">登録クリエイター数</td>
+        <td>約89万人</td>
+        <td>約26万人</td>
+      </tr>
+      <tr>
+        <td class="label-col">販売手数料</td>
+        <td><span class="highlight">10.56%</span>（税込）</td>
+        <td><span class="highlight">11%</span>（税込）</td>
+      </tr>
+      <tr>
+        <td class="label-col">振込手数料</td>
+        <td>一律 220円</td>
+        <td>176円〜275円<br><small style="color:var(--text-light);">PayPayBankは55円</small></td>
+      </tr>
+      <tr>
+        <td class="label-col">審査</td>
+        <td>なし</td>
+        <td>なし</td>
+      </tr>
+      <tr>
+        <td class="label-col">アクセス方法</td>
+        <td>スマホアプリ中心（90%）</td>
+        <td>PC・スマホ両方</td>
+      </tr>
+      <tr>
+        <td class="label-col">価格帯の目安</td>
+        <td>幅広い（低〜高）</td>
+        <td>やや高め。minneより1〜2割高くても売れる</td>
+      </tr>
+      <tr>
+        <td class="label-col">ハッシュタグ</td>
+        <td>最大5個<br><small style="color:var(--text-light);">PLUS会員は20個</small></td>
+        <td>キーワードタグ<br><small style="color:var(--text-light);">PC版から設定</small></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Section 3: アカウント作成ステップ -->
+<section>
+  <div class="section-title">🚀 アカウント作成ステップ</div>
+  <div class="grid-2">
+    <!-- minne steps -->
+    <div class="card card-minne">
+      <div style="margin-bottom:1rem;"><span class="badge-minne">minne</span></div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num step-num-minne">1</div>
+          <div class="step-body">
+            <strong>メールアドレスで会員登録</strong>
+            <span>Googleアカウントでも可</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num step-num-minne">2</div>
+          <div class="step-body">
+            <strong>プロフィール設定</strong>
+            <span>アイコン・ニックネーム・自己紹介・SNSリンク</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num step-num-minne">3</div>
+          <div class="step-body">
+            <strong>作品を出品するだけでOK</strong>
+            <span>審査なし。すぐに販売開始できる</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num step-num-minne">4</div>
+          <div class="step-body">
+            <strong>振込口座を登録</strong>
+            <span>売上を受け取るために必要</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Creema steps -->
+    <div class="card card-creema">
+      <div style="margin-bottom:1rem;"><span class="badge-creema">Creema</span></div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num step-num-creema">1</div>
+          <div class="step-body">
+            <strong>メールアドレスで会員登録</strong>
+            <span>Googleアカウントでも可</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num step-num-creema">2</div>
+          <div class="step-body">
+            <strong>「クリエイター登録」を別途行う</strong>
+            <span>ここを忘れると販売できない！</span>
+            <div class="step-note">⚠️ 会員登録とは別のステップ</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num step-num-creema">3</div>
+          <div class="step-body">
+            <strong>プロフィール完成度を100%に</strong>
+            <span>%表示される。高いほど検索で有利</span>
+            <div class="step-note">📈 ストーリー欄は400〜600文字以上推奨</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num step-num-creema">4</div>
+          <div class="step-body">
+            <strong>作品を出品（審査なし）</strong>
+            <span>30点を目標に出品すると信頼感アップ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: プロフィールのコツ -->
+<section>
+  <div class="section-title">✍️ プロフィールに入れること</div>
+  <div class="grid-3">
+    <div class="point-card">
+      <span class="point-emoji">🖼️</span>
+      <div class="point-title">アイコン画像</div>
+      <div class="point-text">作品か作家の顔写真。ブランドイメージがわかるものを選ぶ。写真の方が親近感が出る</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">✏️</span>
+      <div class="point-title">制作のきっかけ・背景</div>
+      <div class="point-text">なぜこの作品を作っているか。作家としての人柄・ストーリーが伝わると信頼感アップ</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">🧵</span>
+      <div class="point-title">こだわり・技法</div>
+      <div class="point-text">素材・技法・制作時間など具体的に。Creemaでは特に重要。「リアルペット刺繍」のキーワードも入れる</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">📸</span>
+      <div class="point-title">ギャラリー写真</div>
+      <div class="point-text">代表作を数点。プロフィールの印象を決める最重要ビジュアル</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">📱</span>
+      <div class="point-title">InstagramリンクをURL欄に設定</div>
+      <div class="point-text">両プラットフォームとも登録必須。制作過程や日常が見えると購買につながりやすい</div>
+    </div>
+    <div class="point-card" style="background:var(--creema-light);">
+      <span class="point-emoji">📝</span>
+      <div class="point-title">Creema限定：ストーリー欄</div>
+      <div class="point-text">400〜600文字以上書く。ブランドの背景・こだわりを詳しく。完成度スコアに影響する</div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: 商品登録のコツ -->
+<section>
+  <div class="section-title">📦 商品登録のコツ</div>
+
+  <!-- 写真 -->
+  <div style="margin-bottom:1.5rem;">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;">📷 写真 — 1枚目が命</h3>
+    <div class="grid-4">
+      <div class="point-card">
+        <span class="point-emoji">☀️</span>
+        <div class="point-title">明るい背景</div>
+        <div class="point-text">白・アイボリーが無難。作品が主役になる</div>
+      </div>
+      <div class="point-card">
+        <span class="point-emoji">📏</span>
+        <div class="point-title">サイズ感を伝える</div>
+        <div class="point-text">手や定規と一緒に撮影。通販は実物確認できないので必須</div>
+      </div>
+      <div class="point-card">
+        <span class="point-emoji">🔍</span>
+        <div class="point-title">細部アップを入れる</div>
+        <div class="point-text">刺繍の密度・毛並みの細かさが伝わる写真。差別化につながる</div>
+      </div>
+      <div class="point-card">
+        <span class="point-emoji">🏠</span>
+        <div class="point-title">使用シーンも1枚</div>
+        <div class="point-text">部屋に飾った写真など。「自分が使う姿」を想像させる（minneで特に効果的）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 説明文 -->
+  <div style="margin-bottom:1.5rem;">
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;">📄 説明文 — 検索と感情の両立</h3>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><span class="card-icon">🔎</span><span class="card-title">検索で見つけてもらう</span></div>
+        <ul style="list-style:none;font-size:0.88rem;">
+          <li style="padding:0.25rem 0;">タイトルに主要キーワードを必ず入れる</li>
+          <li style="padding:0.25rem 0;">「リアルペット刺繍」「オーダー」「ペット供養」などを本文にも入れる</li>
+          <li style="padding:0.25rem 0;">説明文の末尾に検索用ワードをまとめて記載する方法も有効</li>
+        </ul>
+        <div class="tags" style="margin-top:0.8rem;">
+          <span class="tag">リアルペット刺繍</span>
+          <span class="tag">オーダーメイド</span>
+          <span class="tag">ペット供養</span>
+          <span class="tag">猫 刺繍</span>
+        </div>
+      </div>
+      <div class="card" style="border-left:4px solid var(--creema);">
+        <div class="card-header"><span class="card-icon">💬</span><span class="card-title">Creemaでは「なぜ」を書く</span></div>
+        <ul style="list-style:none;font-size:0.88rem;">
+          <li style="padding:0.25rem 0;">「なぜこのデザインにしたか」を書く</li>
+          <li style="padding:0.25rem 0;">使った糸の種類・色の選び方・制作時間</li>
+          <li style="padding:0.25rem 0;">作品に込めた気持ち・エピソード</li>
+          <li style="padding:0.25rem 0;">購買転換率が上がる（minne以上に重要）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- タグ -->
+  <div>
+    <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem;">🏷️ タグ・キーワード戦略</h3>
+    <div class="grid-2">
+      <div class="card card-minne">
+        <div style="margin-bottom:0.8rem;"><span class="badge-minne">minne</span> ハッシュタグ（最大5個）</div>
+        <div style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">広いキーワードは競合が多い。ニッチを攻める</div>
+        <div style="background:var(--bg);border-radius:8px;padding:0.8rem;">
+          <div style="font-size:0.78rem;color:var(--text-light);margin-bottom:0.4rem;">❌ 広すぎる例</div>
+          <div class="tags"><span class="tag">刺繍</span><span class="tag">ハンドメイド</span><span class="tag">プレゼント</span></div>
+          <div style="font-size:0.78rem;color:var(--text-light);margin:0.8rem 0 0.4rem;">✅ ニッチで刺さる例</div>
+          <div class="tags"><span class="tag">リアルペット刺繍</span><span class="tag">愛犬刺繍</span><span class="tag">ペット供養ギフト</span></div>
+        </div>
+      </div>
+      <div class="card card-creema">
+        <div style="margin-bottom:0.8rem;"><span class="badge-creema">Creema</span> キーワードタグ（PC版で設定）</div>
+        <div style="font-size:0.85rem;color:var(--text-light);margin-bottom:0.8rem;">ライバルが少ないキーワードを選ぶのがポイント</div>
+        <div style="background:var(--bg);border-radius:8px;padding:0.8rem;">
+          <div style="font-size:0.78rem;color:var(--text-light);margin-bottom:0.4rem;">✅ 刺繍系おすすめキーワード</div>
+          <div class="tags">
+            <span class="tag tag-creema">リアルペット刺繍</span>
+            <span class="tag tag-creema">オーダーメイド刺繍</span>
+            <span class="tag tag-creema">愛猫 プレゼント</span>
+            <span class="tag tag-creema">手刺繍 作家</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: 売れるための運用コツ -->
+<section>
+  <div class="section-title">💡 売れるための運用コツ</div>
+  <div class="grid-3">
+    <div class="point-card">
+      <span class="point-emoji">🔄</span>
+      <div class="point-title">定期更新が大事</div>
+      <div class="point-text">こまめに作品を更新・追加すると「活発な作家」として表示されやすくなる。週1回でも動かす</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">📦</span>
+      <div class="point-title">Creemaは30点出品を目標に</div>
+      <div class="point-text">出品数が多いほど信頼感の指標になる。バリエーション（額サイズ・動物種類）を増やすのも手</div>
+    </div>
+    <div class="point-card" style="background:var(--creema-light);">
+      <span class="point-emoji">🌟</span>
+      <div class="point-title">Creema特集・メルマガ狙い</div>
+      <div class="point-text">特集掲載されると一気に露出アップ。季節イベントの作品募集に積極的に参加する</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">📱</span>
+      <div class="point-title">InstagramとSNS連携</div>
+      <div class="point-text">プロフィールにInstagramを登録。Instagramから購入ページへの動線を作る</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">💴</span>
+      <div class="point-title">Creemaの価格はやや高めに</div>
+      <div class="point-text">minneより1〜2割高い設定でも売れるケースが多い。適正な価値を主張することが大切</div>
+    </div>
+    <div class="point-card">
+      <span class="point-emoji">🎄</span>
+      <div class="point-title">季節・イベントを意識する</div>
+      <div class="point-text">クリスマス・母の日・お盆など「ペットへのギフト需要」が高まるタイミングに合わせて出品</div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Instagram からショップへの誘導 -->
+<section>
+  <div class="section-title">📱 Instagramからショップへ誘導する方法</div>
+
+  <!-- アルゴリズムの注意点 -->
+  <div style="background:var(--yellow-light);border-left:5px solid var(--yellow);border-radius:0 12px 12px 0;padding:1.2rem 1.5rem;margin-bottom:1.5rem;">
+    <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;color:#f57f17;margin-bottom:0.6rem;">⚠️ アルゴリズムの実態（公式ルールではなく現場の常識）</div>
+    <p style="font-size:0.9rem;">Instagramは外部リンクへの誘導を<strong>禁止していない</strong>。ただし「ユーザーをInstagram外へ出そうとする投稿」はプラットフォーム内で完結する投稿よりリーチが落ちやすい傾向がある。<br>
+    → リールや投稿で外部リンクを前面に押し出すより、<span style="color:var(--minne);font-weight:700;">ストーリーズでリンクステッカーを使う</span>のが正解。</p>
+  </div>
+
+  <!-- 4つの方法 -->
+  <div class="grid-2" style="margin-bottom:1.5rem;">
+
+    <!-- 方法1: プロフィールリンク -->
+    <div class="card" style="border-top:4px solid var(--orange);">
+      <div class="card-header">
+        <span class="card-icon">🔗</span>
+        <div>
+          <div class="card-title">① プロフィールのリンク</div>
+          <span style="font-size:0.78rem;background:var(--orange-light);color:var(--orange);border-radius:20px;padding:0.15rem 0.6rem;font-weight:700;">最重要・常時設置</span>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;margin-bottom:0.8rem;">ビオリンクやLinktreeなどのリンクまとめツールを使い、minne・Creema・bespokeの3つを一覧で置く。投稿では「プロフィールから」の一言で誘導できる。</p>
+      <div style="background:var(--bg);border-radius:8px;padding:0.8rem;font-size:0.82rem;">
+        <div style="color:var(--text-light);margin-bottom:0.4rem;">リンクまとめツールの例</div>
+        <div class="tags">
+          <span class="tag">Linktree（無料あり）</span>
+          <span class="tag">リットリンク（日本製）</span>
+          <span class="tag">Biosite</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 方法2: ストーリーズ リンクステッカー -->
+    <div class="card" style="border-top:4px solid var(--minne);">
+      <div class="card-header">
+        <span class="card-icon">🏷️</span>
+        <div>
+          <div class="card-title">② ストーリーズ リンクステッカー</div>
+          <span style="font-size:0.78rem;background:var(--minne-light);color:var(--minne);border-radius:20px;padding:0.15rem 0.6rem;font-weight:700;">一番クリックされやすい</span>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;margin-bottom:0.8rem;">2021年からフォロワー数に関係なく全員が使える。ストーリーズ投稿時にステッカーから「リンク」を選んでURLを貼り付けるだけ。</p>
+      <div style="background:var(--bg);border-radius:8px;padding:0.8rem;font-size:0.82rem;">
+        <div style="color:var(--text-light);margin-bottom:0.4rem;">テキストの例（URLを隠して表示できる）</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「6月のオーダーはこちら ▶」</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「minneのショップを見てみる ▶」</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「オーダーフォームはここから ▶」</div>
+      </div>
+    </div>
+
+    <!-- 方法3: 投稿文にプロフリンク誘導 -->
+    <div class="card" style="border-top:4px solid var(--indigo);">
+      <div class="card-header">
+        <span class="card-icon">✏️</span>
+        <div>
+          <div class="card-title">③ 投稿文に「プロフィールから」を入れる</div>
+          <span style="font-size:0.78rem;background:var(--indigo-light);color:var(--indigo);border-radius:20px;padding:0.15rem 0.6rem;font-weight:700;">リール・フィードで使う</span>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;margin-bottom:0.8rem;">投稿文（キャプション）にはURLが貼れてもリンクにならない。「プロフィールのリンクから」と書いてプロフィールへ誘導するのが定番。</p>
+      <div style="background:var(--bg);border-radius:8px;padding:0.8rem;font-size:0.82rem;">
+        <div style="color:var(--text-light);margin-bottom:0.4rem;">キャプション末尾の例</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「オーダーのご相談はプロフィールのリンクから🧵」</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「minneでも販売中です→プロフィールから」</div>
+      </div>
+      <div style="margin-top:0.8rem;font-size:0.8rem;color:var(--text-light);">※ リールで外部誘導を前面に出しすぎるとリーチが落ちる可能性あり。CTAは控えめに</div>
+    </div>
+
+    <!-- 方法4: DM誘導 -->
+    <div class="card" style="border-top:4px solid var(--green);">
+      <div class="card-header">
+        <span class="card-icon">💬</span>
+        <div>
+          <div class="card-title">④ DM誘導</div>
+          <span style="font-size:0.78rem;background:var(--green-light);color:var(--green);border-radius:20px;padding:0.15rem 0.6rem;font-weight:700;">成約率が一番高い</span>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;margin-bottom:0.8rem;">「気になる方はDMをどうぞ」と投稿に書いてDMで直接やり取りする。一対一のコミュニケーションになるので成約しやすい。口コミで来た人と同等の信頼感がある。</p>
+      <div style="background:var(--bg);border-radius:8px;padding:0.8rem;font-size:0.82rem;">
+        <div style="color:var(--text-light);margin-bottom:0.4rem;">DMでの誘導例</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「ご質問・オーダーのご相談はDMへ」</div>
+        <div style="background:white;border:1px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.85rem;margin-top:0.3rem;">「DMいただければフォームのリンクをお送りします」</div>
+      </div>
+      <div style="margin-top:0.8rem;font-size:0.8rem;color:var(--text-light);">※ DM返信もエンゲージメントとしてアルゴリズムにプラスに働く</div>
+    </div>
+  </div>
+
+  <!-- 使い分けの整理 -->
+  <div class="emph-box">
+    <h3>🗂️ 投稿形式×誘導方法の使い分け</h3>
+    <ul>
+      <li>リール・フィード → 外部リンクを前面に出さない。最後に「プロフィールから」を一言添える程度</li>
+      <li>ストーリーズ → リンクステッカーで直接誘導。「6月受付開始」などの告知に最適</li>
+      <li>DM → 問い合わせてきた人・過去のお客様への個別対応。成約率が最も高い</li>
+      <li>プロフィールリンク → 常時設置。ここだけ整えておけば他の方法がすべてつながる</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+  アカデミー資料 | takis 2026-05-30 | Web調査まとめ
+</div>
+
+</body>
+</html>
